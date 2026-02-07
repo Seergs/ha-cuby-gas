@@ -1,0 +1,12 @@
+{
+    "domain": "cuby_gas",
+    "name": "Cuby Gas Sensor",
+    "config_flow": true,
+    "documentation": "https://github.com/seergs/ha-cuby-gas",
+    "dependencies": [],
+    "codeowners": "@seergs",
+    "requirements": [],
+    "iot_class": "cloud_polling",
+    "version": "0.1.0"
+}
+
