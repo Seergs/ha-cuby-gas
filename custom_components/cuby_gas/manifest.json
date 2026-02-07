@@ -3,6 +3,7 @@
     "name": "Cuby Gas Sensor",
     "config_flow": true,
     "documentation": "https://github.com/seergs/ha-cuby-gas",
+    "issue_tracker": "https://github.com/seergs/ha-cuby-gas/issues",
     "dependencies": [],
     "codeowners": ["@seergs"],
     "requirements": [],
