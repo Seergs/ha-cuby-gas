@@ -3,7 +3,7 @@ from datetime import datetime, timedelta
 import aiohttp
 import async_timeout
 
-from .const import API_TOKEN_ENDPOINT, API_GAS_LEVEL_ENDPOINT
+from .const import get_token_endpoint, get_gas_level_endpoint
 
 _LOGGER = logging.getLogger(__name__)
 
@@ -14,6 +14,8 @@ class CubyApiClient:
         self._session = session
         self._token = None
         self._token_expires_at = None
+        self._token_endpoint = get_token_endpoint(username)
+        self._gas_level_endpoint = get_gas_level_endpoint()
 
     async def ensure_token_valid(self):
         now = datetime.now()
@@ -23,12 +25,12 @@ class CubyApiClient:
             await self._refresh_token()
 
     async def _refresh_token(self):
-        _LOGGER.debug("Refreshing Cuby API token")
+        _LOGGER.debug("Refreshing Cuby API token for user: %s", self._username)
 
         try:
             async with async_timeout.timeout(10):
                 response = await self._session.post(
-                        API_TOKEN_ENDPOINT,
+                        self._token_endpoint,
                         json={"password": self._password})
                 
                 if response.status != 200:
@@ -59,7 +61,7 @@ class CubyApiClient:
 
             async with async_timeout.timeout(10):
                 response = await self._session.get(
-                        f"{API_GAS_LEVEL_ENDPOINT}/{device_id}", headers=headers)
+                        f"{self._gas_level_endpoint}/{device_id}", headers=headers)
 
                 if response.status != 200:
                     _LOGGER.error("Failed to get gas level, status: %s, response: %s", response.status, await response.text())
